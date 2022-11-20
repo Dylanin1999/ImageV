@@ -23,6 +23,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    ImageFormatConvert *InstanceofImgCvt;
     QStringList paths;
     QButtonGroup *ImgformatBtnGroup;
 };

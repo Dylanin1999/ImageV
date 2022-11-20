@@ -21,8 +21,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-INCLUDEPATH += E:\OpencvLib\OpenCV-MinGW-Build-OpenCV-4.1.1-x64\include
-LIBS += E:\OpencvLib\OpenCV-MinGW-Build-OpenCV-4.1.1-x64\x64\mingw\lib\libopencv_*.a
+INCLUDEPATH += D:\Software\opencv-4.6.0\opencv46Mscv\build\install\include \
+               D:\Software\opencv-4.6.0\opencv46Mscv\build\install\include\opencv2 \
+                ./jpeglib/Release/include
+LIBS += D:\Software\opencv-4.6.0\opencv46Mscv\build\lib\libopencv_*.dll.a \
+        C:\Users\One\Downloads\YUVViewer4Linux-master\YUVViewer4Linux-master\jpeglib\Release\x64\jpeg.lib
 CONFIG += c++11
 
 SOURCES += \

@@ -1,5 +1,6 @@
 #include "imageformatconvert.h"
 #include <string>
+using namespace cv;
 void ImageFormatConvert::NV12ToJpg(QStringList paths, int Height, int Width, int Stride)
 {
     for(int i = 0;i<paths.size();i++)
@@ -27,13 +28,14 @@ void ImageFormatConvert::NV12ToJpg(QStringList paths, int Height, int Width, int
         int yHeight = int(Height/3*2);
         qDebug()<<"yHeight: "<<yHeight;
         qDebug()<<"Width: "<<Width;
+        qDebug()<<"Stride: "<<Stride;
         unsigned char U;
         unsigned char V;
         unsigned char Y;
 
         std::string filename = path.substr(0,path.find_last_of('.')+1)+"jpg";
         qDebug()<<"filename: "<<QString::fromStdString(filename);
-        cv::Mat jpgImg(yHeight,Width,CV_8UC3);
+
         for (int i = 0; i < yHeight; i++) {
             for (int j = 0;j<Width;j++) {
                 Y = int(yuvbuff[j + i * Stride]);
@@ -98,7 +100,7 @@ void ImageFormatConvert::NV21ToJpg(QStringList paths, int Height, int Width, int
 
         std::string filename = path.substr(0,path.find_last_of('.')+1)+"jpg";
         qDebug()<<"filename: "<<QString::fromStdString(filename);
-        cv::Mat jpgImg(yHeight,Width,CV_8UC3);
+
         for (int i = 0; i < yHeight; i++) {
             for (int j = 0;j<Width;j++) {
                 Y = int(yuvbuff[j + i * Stride]);
@@ -133,6 +135,7 @@ void ImageFormatConvert::NV21ToJpg(QStringList paths, int Height, int Width, int
 
 void ImageFormatConvert::I444ToJpg(QStringList paths, int Height, int Width, int Stride)
 {
+
     for(int i = 0;i<paths.size();i++)
     {
         std::string path = paths[i].toStdString();
@@ -164,7 +167,7 @@ void ImageFormatConvert::I444ToJpg(QStringList paths, int Height, int Width, int
 
         std::string filename = path.substr(0,path.find_last_of('.')+1)+"jpg";
         qDebug()<<"filename: "<<QString::fromStdString(filename);
-        cv::Mat jpgImg(yHeight,Width,CV_8UC3);
+
         for (int i = 0; i < yHeight; i++) {
             for (int j = 0;j<Width;j++) {
                 Y = int(yuvbuff[j + i * Stride]);
@@ -196,7 +199,7 @@ void ImageFormatConvert::I444ToJpg(QStringList paths, int Height, int Width, int
     }
 }
 
-void ImageFormatConvert::YV24ToJpg(QStringList paths, int Height, int Width, int Stride)
+void ImageFormatConvert::YV24ToJpg(QStringList paths,int Height, int Width, int Stride)
 {
     for(int i = 0;i<paths.size();i++)
     {
@@ -229,7 +232,7 @@ void ImageFormatConvert::YV24ToJpg(QStringList paths, int Height, int Width, int
 
         std::string filename = path.substr(0,path.find_last_of('.')+1)+"jpg";
         qDebug()<<"filename: "<<QString::fromStdString(filename);
-        cv::Mat jpgImg(yHeight,Width,CV_8UC3);
+
         for (int i = 0; i < yHeight; i++) {
             for (int j = 0;j<Width;j++) {
                Y = int(yuvbuff[j + i * Stride]);
@@ -294,7 +297,7 @@ void ImageFormatConvert::I420ToJpg(QStringList paths, int Height, int Width, int
 
         std::string filename = path.substr(0,path.find_last_of('.')+1)+"jpg";
         qDebug()<<"filename: "<<QString::fromStdString(filename);
-        cv::Mat jpgImg(yHeight,Width,CV_8UC3);
+
         for (int i = 0; i < yHeight; i++) {
             for (int j = 0;j<Width;j++) {
                 Y = int(yuvbuff[j + i * Stride]);
@@ -325,6 +328,14 @@ void ImageFormatConvert::I420ToJpg(QStringList paths, int Height, int Width, int
             }
         }
         cv::imwrite(filename,jpgImg);
+    }
+}
+void ImageFormatConvert::JpgToJpg(QStringList paths, int Height, int Width, int Stride)
+{
+    qDebug()<<"JPEG Show!\n";
+    for(int i = 0;i<paths.size();i++)
+    {
+        myQImage.load(paths[i]);
     }
 }
 

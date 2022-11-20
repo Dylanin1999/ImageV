@@ -1,5 +1,5 @@
-# YUVViewer4Linux  
-这是一个Linux下的YUV image 看图工具   
+# ImageV 
+这是一个基于QT的多平台 image 看图工具   
 It is a Yuv image viwer for Linux   
 
 在Windows中有YUV Viewer,但在Linux中没有。这很不方便，所以我自己基于QT做了类似YUV viewer的看图工具...  

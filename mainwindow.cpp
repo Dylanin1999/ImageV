@@ -12,7 +12,7 @@
 #include <QRegularExpressionMatch>
 #include <QRegularExpressionValidator>
 #include <QMessageBox>
-
+#include <QGraphicsView>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -131,8 +131,11 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                               InstanceofImgCvt->jpgImg.cols,
                                                                               InstanceofImgCvt->jpgImg.rows,
                                                                               InstanceofImgCvt->jpgImg.cols * 3, QImage::Format_RGB888);
-
-                ui->ImgWindows->setPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage).scaled(ui->ImgWindows->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+                QGraphicsScene *scene = new QGraphicsScene;
+//                QGraphicsView *view = new QGraphicsView( scene,this );
+                scene->addPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage).scaled(ui->ImgWindows->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+                ui->ImgWindows->setScene(scene);
+                ui->ImgWindows->show();
             }
         });
 

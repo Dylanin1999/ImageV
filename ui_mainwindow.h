@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -32,18 +33,24 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QWidget *horizontalLayoutWidget;
+    QGridLayout *gridLayout_3;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout1;
     QTextEdit *pathline;
     QSpacerItem *horizontalSpacer_3;
     QPushButton *pathbutton;
-    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_2;
-    QLineEdit *postfix_textline;
-    QPushButton *modifyBtn;
+    QGraphicsView *ImgWindows;
+    QSpacerItem *horizontalSpacer;
+    QVBoxLayout *verticalLayout_2;
+    QGridLayout *gridLayout_2;
     QPushButton *TransBtn;
-    QLabel *ImgWindows;
-    QWidget *layoutWidget1;
+    QVBoxLayout *verticalLayout;
+    QRadioButton *NV12Button;
+    QRadioButton *NV21Button;
+    QRadioButton *I444Button;
+    QRadioButton *YV24Button;
+    QRadioButton *JPGButton;
     QGridLayout *gridLayout;
     QLabel *ImgS;
     QLineEdit *ImgStride;
@@ -51,13 +58,11 @@ public:
     QLabel *ImgHeight;
     QLineEdit *ImgH;
     QLineEdit *ImgW;
-    QWidget *layoutWidget2;
-    QVBoxLayout *verticalLayout;
-    QRadioButton *NV12Button;
-    QRadioButton *NV21Button;
-    QRadioButton *I444Button;
-    QRadioButton *YV24Button;
-    QRadioButton *JPGButton;
+    QHBoxLayout *horizontalLayout;
+    QLineEdit *postfix_textline;
+    QPushButton *modifyBtn;
+    QSpacerItem *verticalSpacer;
+    QLabel *label;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -67,25 +72,28 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(731, 570);
+        MainWindow->resize(668, 631);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName("centralWidget");
-        horizontalLayoutWidget = new QWidget(centralWidget);
-        horizontalLayoutWidget->setObjectName("horizontalLayoutWidget");
-        horizontalLayoutWidget->setGeometry(QRect(30, 10, 671, 31));
-        horizontalLayout1 = new QHBoxLayout(horizontalLayoutWidget);
+        gridLayout_3 = new QGridLayout(centralWidget);
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setContentsMargins(11, 11, 11, 11);
+        gridLayout_3->setObjectName("gridLayout_3");
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setObjectName("verticalLayout_3");
+        verticalLayout_3->setSizeConstraint(QLayout::SetNoConstraint);
+        horizontalLayout1 = new QHBoxLayout();
         horizontalLayout1->setSpacing(6);
-        horizontalLayout1->setContentsMargins(11, 11, 11, 11);
         horizontalLayout1->setObjectName("horizontalLayout1");
-        horizontalLayout1->setContentsMargins(0, 0, 0, 0);
-        pathline = new QTextEdit(horizontalLayoutWidget);
+        pathline = new QTextEdit(centralWidget);
         pathline->setObjectName("pathline");
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(pathline->sizePolicy().hasHeightForWidth());
         pathline->setSizePolicy(sizePolicy);
-        pathline->setMaximumSize(QSize(16777215, 100));
+        pathline->setMaximumSize(QSize(16777215, 20));
 
         horizontalLayout1->addWidget(pathline);
 
@@ -93,110 +101,149 @@ public:
 
         horizontalLayout1->addItem(horizontalSpacer_3);
 
-        pathbutton = new QPushButton(horizontalLayoutWidget);
+        pathbutton = new QPushButton(centralWidget);
         pathbutton->setObjectName("pathbutton");
 
         horizontalLayout1->addWidget(pathbutton);
 
-        layoutWidget = new QWidget(centralWidget);
-        layoutWidget->setObjectName("layoutWidget");
-        layoutWidget->setGeometry(QRect(480, 220, 241, 31));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
+
+        verticalLayout_3->addLayout(horizontalLayout1);
+
+        horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        postfix_textline = new QLineEdit(layoutWidget);
-        postfix_textline->setObjectName("postfix_textline");
+        ImgWindows = new QGraphicsView(centralWidget);
+        ImgWindows->setObjectName("ImgWindows");
 
-        horizontalLayout_2->addWidget(postfix_textline);
+        horizontalLayout_2->addWidget(ImgWindows);
 
-        modifyBtn = new QPushButton(layoutWidget);
-        modifyBtn->setObjectName("modifyBtn");
+        horizontalSpacer = new QSpacerItem(2, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_2->addWidget(modifyBtn);
+        horizontalLayout_2->addItem(horizontalSpacer);
 
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setObjectName("gridLayout_2");
         TransBtn = new QPushButton(centralWidget);
         TransBtn->setObjectName("TransBtn");
-        TransBtn->setGeometry(QRect(630, 180, 75, 23));
-        ImgWindows = new QLabel(centralWidget);
-        ImgWindows->setObjectName("ImgWindows");
-        ImgWindows->setGeometry(QRect(20, 80, 451, 461));
-        layoutWidget1 = new QWidget(centralWidget);
-        layoutWidget1->setObjectName("layoutWidget1");
-        layoutWidget1->setGeometry(QRect(550, 70, 171, 99));
-        gridLayout = new QGridLayout(layoutWidget1);
-        gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        ImgS = new QLabel(layoutWidget1);
-        ImgS->setObjectName("ImgS");
 
-        gridLayout->addWidget(ImgS, 2, 0, 1, 1);
+        gridLayout_2->addWidget(TransBtn, 1, 1, 1, 1);
 
-        ImgStride = new QLineEdit(layoutWidget1);
-        ImgStride->setObjectName("ImgStride");
-
-        gridLayout->addWidget(ImgStride, 2, 1, 1, 1);
-
-        ImgWidth = new QLabel(layoutWidget1);
-        ImgWidth->setObjectName("ImgWidth");
-
-        gridLayout->addWidget(ImgWidth, 0, 0, 1, 1);
-
-        ImgHeight = new QLabel(layoutWidget1);
-        ImgHeight->setObjectName("ImgHeight");
-
-        gridLayout->addWidget(ImgHeight, 1, 0, 1, 1);
-
-        ImgH = new QLineEdit(layoutWidget1);
-        ImgH->setObjectName("ImgH");
-
-        gridLayout->addWidget(ImgH, 1, 1, 1, 1);
-
-        ImgW = new QLineEdit(layoutWidget1);
-        ImgW->setObjectName("ImgW");
-
-        gridLayout->addWidget(ImgW, 0, 1, 1, 1);
-
-        layoutWidget2 = new QWidget(centralWidget);
-        layoutWidget2->setObjectName("layoutWidget2");
-        layoutWidget2->setGeometry(QRect(490, 70, 57, 126));
-        verticalLayout = new QVBoxLayout(layoutWidget2);
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        NV12Button = new QRadioButton(layoutWidget2);
+        NV12Button = new QRadioButton(centralWidget);
         NV12Button->setObjectName("NV12Button");
 
         verticalLayout->addWidget(NV12Button);
 
-        NV21Button = new QRadioButton(layoutWidget2);
+        NV21Button = new QRadioButton(centralWidget);
         NV21Button->setObjectName("NV21Button");
 
         verticalLayout->addWidget(NV21Button);
 
-        I444Button = new QRadioButton(layoutWidget2);
+        I444Button = new QRadioButton(centralWidget);
         I444Button->setObjectName("I444Button");
 
         verticalLayout->addWidget(I444Button);
 
-        YV24Button = new QRadioButton(layoutWidget2);
+        YV24Button = new QRadioButton(centralWidget);
         YV24Button->setObjectName("YV24Button");
 
         verticalLayout->addWidget(YV24Button);
 
-        JPGButton = new QRadioButton(layoutWidget2);
+        JPGButton = new QRadioButton(centralWidget);
         JPGButton->setObjectName("JPGButton");
 
         verticalLayout->addWidget(JPGButton);
 
+
+        gridLayout_2->addLayout(verticalLayout, 0, 0, 2, 1);
+
+        gridLayout = new QGridLayout();
+        gridLayout->setSpacing(6);
+        gridLayout->setObjectName("gridLayout");
+        ImgS = new QLabel(centralWidget);
+        ImgS->setObjectName("ImgS");
+
+        gridLayout->addWidget(ImgS, 2, 0, 1, 1);
+
+        ImgStride = new QLineEdit(centralWidget);
+        ImgStride->setObjectName("ImgStride");
+
+        gridLayout->addWidget(ImgStride, 2, 1, 1, 1);
+
+        ImgWidth = new QLabel(centralWidget);
+        ImgWidth->setObjectName("ImgWidth");
+
+        gridLayout->addWidget(ImgWidth, 0, 0, 1, 1);
+
+        ImgHeight = new QLabel(centralWidget);
+        ImgHeight->setObjectName("ImgHeight");
+
+        gridLayout->addWidget(ImgHeight, 1, 0, 1, 1);
+
+        ImgH = new QLineEdit(centralWidget);
+        ImgH->setObjectName("ImgH");
+
+        gridLayout->addWidget(ImgH, 1, 1, 1, 1);
+
+        ImgW = new QLineEdit(centralWidget);
+        ImgW->setObjectName("ImgW");
+
+        gridLayout->addWidget(ImgW, 0, 1, 1, 1);
+
+
+        gridLayout_2->addLayout(gridLayout, 0, 1, 1, 1);
+
+
+        verticalLayout_2->addLayout(gridLayout_2);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName("horizontalLayout");
+        postfix_textline = new QLineEdit(centralWidget);
+        postfix_textline->setObjectName("postfix_textline");
+
+        horizontalLayout->addWidget(postfix_textline);
+
+        modifyBtn = new QPushButton(centralWidget);
+        modifyBtn->setObjectName("modifyBtn");
+
+        horizontalLayout->addWidget(modifyBtn);
+
+
+        verticalLayout_2->addLayout(horizontalLayout);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer);
+
+        label = new QLabel(centralWidget);
+        label->setObjectName("label");
+
+        verticalLayout_2->addWidget(label);
+
+
+        horizontalLayout_2->addLayout(verticalLayout_2);
+
+        horizontalLayout_2->setStretch(0, 4);
+        horizontalLayout_2->setStretch(2, 1);
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
+
+        verticalLayout_3->setStretch(0, 1);
+        verticalLayout_3->setStretch(1, 30);
+
+        gridLayout_3->addLayout(verticalLayout_3, 0, 0, 1, 1);
+
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName("menuBar");
-        menuBar->setGeometry(QRect(0, 0, 731, 22));
+        menuBar->setGeometry(QRect(0, 0, 668, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName("mainToolBar");
@@ -217,17 +264,17 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         pathbutton->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\274\200\346\226\207\344\273\266", nullptr));
-        modifyBtn->setText(QCoreApplication::translate("MainWindow", "\344\277\256\346\224\271\345\220\216\347\274\200", nullptr));
         TransBtn->setText(QCoreApplication::translate("MainWindow", "\350\275\254\346\215\242", nullptr));
-        ImgWindows->setText(QString());
-        ImgS->setText(QCoreApplication::translate("MainWindow", "Stride", nullptr));
-        ImgWidth->setText(QCoreApplication::translate("MainWindow", "Width", nullptr));
-        ImgHeight->setText(QCoreApplication::translate("MainWindow", "Height", nullptr));
         NV12Button->setText(QCoreApplication::translate("MainWindow", "NV12", nullptr));
         NV21Button->setText(QCoreApplication::translate("MainWindow", "NV21", nullptr));
         I444Button->setText(QCoreApplication::translate("MainWindow", "I444", nullptr));
         YV24Button->setText(QCoreApplication::translate("MainWindow", "YV24", nullptr));
         JPGButton->setText(QCoreApplication::translate("MainWindow", "JPG", nullptr));
+        ImgS->setText(QCoreApplication::translate("MainWindow", "Stride", nullptr));
+        ImgWidth->setText(QCoreApplication::translate("MainWindow", "Width", nullptr));
+        ImgHeight->setText(QCoreApplication::translate("MainWindow", "Height", nullptr));
+        modifyBtn->setText(QCoreApplication::translate("MainWindow", "\344\277\256\346\224\271\345\220\216\347\274\200", nullptr));
+        label->setText(QString());
         toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 

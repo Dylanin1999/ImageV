@@ -16,17 +16,17 @@
 #include <QGraphicsPixmapItem>
 #include <QListWidget>
 #include <QObject>
+#include "imgshowwidget.h"
 
 void MainWindow::OnListWidgetDoubleClicked(QListWidgetItem* item)
 {
     qDebug()<<"Click! index is :"<<item->whatsThis();
-    QWidget *NewImgWindows = new QWidget();
+    ImgShowWidget *NewImgWindows = new ImgShowWidget();
     QPixmap pic;
     pic.load(paths[item->whatsThis().toInt()]);
 
-    QPalette palette;
-    palette.setBrush(this->backgroundRole(),QBrush(pic));
-    NewImgWindows->setPalette(palette);
+    NewImgWindows->ImgShowLabel->setPixmap(pic);
+    NewImgWindows->setMaximumSize(NewImgWindows->ImgShowLabel->maximumSize());
     NewImgWindows->show();
 }
 

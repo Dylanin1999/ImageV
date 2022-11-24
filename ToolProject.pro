@@ -29,12 +29,14 @@ LIBS += D:\Software\opencv-4.6.0\opencv46Mscv\build\lib\libopencv_*.dll.a \
 CONFIG += c++11
 
 SOURCES += \
+    imgshowwidget.cpp \
         main.cpp \
         mainwindow.cpp \
     namechange.cpp \
     imageformatconvert.cpp
 
 HEADERS += \
+    imgshowwidget.h \
         mainwindow.h \
     namechange.h \
     imageformatconvert.h

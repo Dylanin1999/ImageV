@@ -28,13 +28,13 @@ public:
     unsigned int ImgH;
     unsigned int ImgStride;
     ImageFormatConvert();
-    void NV12ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void NV21ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void I444ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void YV24ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void I420ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void YV12ToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
-    void JpgToJpg(QStringList paths,int Height=0,int Width=0,int Stride=0);
+    void NV12ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void NV21ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void I444ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void YV24ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void I420ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void YV12ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void JpgToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
 
     void YUVToRGB(int Y,int U,int V);
 };

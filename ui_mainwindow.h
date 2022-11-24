@@ -11,11 +11,11 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -40,7 +40,7 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QPushButton *pathbutton;
     QHBoxLayout *horizontalLayout_2;
-    QGraphicsView *ImgWindows;
+    QListWidget *ImgList;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_2;
     QGridLayout *gridLayout_2;
@@ -112,10 +112,10 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        ImgWindows = new QGraphicsView(centralWidget);
-        ImgWindows->setObjectName("ImgWindows");
+        ImgList = new QListWidget(centralWidget);
+        ImgList->setObjectName("ImgList");
 
-        horizontalLayout_2->addWidget(ImgWindows);
+        horizontalLayout_2->addWidget(ImgList);
 
         horizontalSpacer = new QSpacerItem(2, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 

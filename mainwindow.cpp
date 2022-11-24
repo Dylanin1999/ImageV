@@ -13,6 +13,23 @@
 #include <QRegularExpressionValidator>
 #include <QMessageBox>
 #include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QListWidget>
+#include <QObject>
+
+void MainWindow::OnListWidgetDoubleClicked(QListWidgetItem* item)
+{
+    qDebug()<<"Click! index is :"<<item->whatsThis();
+    QWidget *NewImgWindows = new QWidget();
+    QPixmap pic;
+    pic.load(paths[item->whatsThis().toInt()]);
+
+    QPalette palette;
+    palette.setBrush(this->backgroundRole(),QBrush(pic));
+    NewImgWindows->setPalette(palette);
+    NewImgWindows->show();
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -21,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("ImageV");
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(255, 255, 255));
-    ui->ImgWindows->setPalette(palette);
+//    ui->ImgWindows->setPalette(palette);
 //    ui->ImgWindows->setAutoFillBackground(true);
 
     ui->pathline->setAcceptDrops(true);
@@ -33,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ImgformatBtnGroup->addButton(ui->JPGButton,JPG);
     ui->NV12Button->setChecked(true);
     InstanceofImgCvt = new ImageFormatConvert();
+    QGraphicsScene *scene = new QGraphicsScene;
     QRegularExpression regExp("[0-9]+$");
     QValidator *validator = new QRegularExpressionValidator(regExp, this );
 
@@ -52,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->pathbutton,&QPushButton::clicked,[=](){
 
-        QStringList paths = QFileDialog::getOpenFileNames(this,"打开文件","C:\\Users");
+        paths = QFileDialog::getOpenFileNames(this,"打开文件","C:\\Users");
         QString path;
         for(int i=0;i<paths.size();i++)
         {
@@ -107,46 +125,62 @@ MainWindow::MainWindow(QWidget *parent) :
             else
             {
                 cv::Mat(InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,CV_8UC3).copyTo(InstanceofImgCvt->jpgImg);
+                int ratio = ui->ImgList->size().width()/3;
+                qDebug()<<"ratio is "<<ratio;
+                ui->ImgList->setViewMode(QListWidget::IconMode);
+                ui->ImgList->setSpacing(10);
+                ui->ImgList->setResizeMode(QListView::Adjust);
+                ui->ImgList->setMovement(QListView::Free);
+                ui->ImgList->setIconSize(QSize(ratio*1.5, ratio*1.5));
 
-                switch (ImgformatBtnGroup->checkedId())
+                for(int i=0;i<paths.size();i++)
                 {
-                    case NV12:
-                    InstanceofImgCvt->NV12ToJpg(paths,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
-                    break;
-                    case NV21:
-                    InstanceofImgCvt->NV21ToJpg(paths,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
-                    break;
-                    case I444:
-                    InstanceofImgCvt->I444ToJpg(paths,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
-                    break;
-                    case YV24:
-                    InstanceofImgCvt->YV24ToJpg(paths,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
-                    break;
-                    case JPG:
-                    InstanceofImgCvt->JpgToJpg(paths,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
-                    break;
+                    std::string path = paths[i].toStdString();
+                    switch (ImgformatBtnGroup->checkedId())
+                    {
+                        case NV12:
+                        InstanceofImgCvt->NV12ToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        break;
+                        case NV21:
+                        InstanceofImgCvt->NV21ToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        break;
+                        case I444:
+                        InstanceofImgCvt->I444ToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        break;
+                        case YV24:
+                        InstanceofImgCvt->YV24ToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        break;
+                        case JPG:
+                        InstanceofImgCvt->JpgToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        break;
+                    }
+                    if(ImgformatBtnGroup->checkedId()!=JPG)
+                        InstanceofImgCvt->myQImage = QImage((const unsigned char*)InstanceofImgCvt->jpgImg.data,
+                                                                                  InstanceofImgCvt->jpgImg.cols,
+                                                                                  InstanceofImgCvt->jpgImg.rows,
+                                                                                  InstanceofImgCvt->jpgImg.cols * 3, QImage::Format_RGB888);
+
+                    QIcon icon;
+                    QListWidgetItem *imageItem = new QListWidgetItem;
+                    imageItem->setWhatsThis( QString::number(i));
+                    icon.addPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage));
+                    imageItem->setIcon(icon);
+                    ui->ImgList->addItem(imageItem);
+                    qDebug()<<"What is this "<<imageItem->whatsThis();
+
                 }
-                if(ImgformatBtnGroup->checkedId()!=JPG)
-                    InstanceofImgCvt->myQImage = QImage((const unsigned char*)InstanceofImgCvt->jpgImg.data,
-                                                                              InstanceofImgCvt->jpgImg.cols,
-                                                                              InstanceofImgCvt->jpgImg.rows,
-                                                                              InstanceofImgCvt->jpgImg.cols * 3, QImage::Format_RGB888);
-                QGraphicsScene *scene = new QGraphicsScene;
-//                QGraphicsView *view = new QGraphicsView( scene,this );
-                scene->addPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage).scaled(ui->ImgWindows->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
-                ui->ImgWindows->setScene(scene);
-                ui->ImgWindows->show();
             }
         });
-
-
     });
-
+    connect(ui->ImgList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(OnListWidgetDoubleClicked(QListWidgetItem*)));
 }
+
+
 
 MainWindow::~MainWindow()
 {
     delete InstanceofImgCvt;
+    delete scene;
     delete ui;
 }
 

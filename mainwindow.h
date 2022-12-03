@@ -7,6 +7,8 @@
 #include <QButtonGroup>
 #include <QGraphicsScene>
 #include <QListWidgetItem>
+#include <QLabel>
+#include "clickableqlabel.h"
 namespace Ui {
 class MainWindow;
 }
@@ -24,7 +26,8 @@ protected:
     void dropEvent(QDropEvent *e);
 
 private slots:
-    void OnListWidgetDoubleClicked(QListWidgetItem *item);
+//    void OnListWidgetDoubleClicked(QListWidgetItem *item);
+//    void newImgShowWin(ClickAbleQLabel* qlabel);
 
 
 private:

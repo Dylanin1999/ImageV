@@ -64,9 +64,44 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,0,1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="6,0,1">
         <item>
-         <widget class="QListWidget" name="ImgList"/>
+         <widget class="WaterfallScrollArea" name="ImgShowWin">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>500</height>
+           </size>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::ActionsContextMenu</enum>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>452</width>
+             <height>521</height>
+            </rect>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::ActionsContextMenu</enum>
+           </property>
+          </widget>
+         </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer">
@@ -241,6 +276,14 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>WaterfallScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>waterfallscrollarea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

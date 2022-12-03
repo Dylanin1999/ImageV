@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qobjectdefs.h"
 #include "ui_mainwindow.h"
 #include <QPushButton>
 #include <QFile>
@@ -16,30 +17,22 @@
 #include <QGraphicsPixmapItem>
 #include <QListWidget>
 #include <QObject>
-#include "imgshowwidget.h"
+#include <QSignalBlocker>
+//#include "imgshowwidget.h"
 
-void MainWindow::OnListWidgetDoubleClicked(QListWidgetItem* item)
-{
-    qDebug()<<"Click! index is :"<<item->whatsThis();
-    ImgShowWidget *NewImgWindows = new ImgShowWidget();
-    QPixmap pic;
-    pic.load(paths[item->whatsThis().toInt()]);
 
-    NewImgWindows->ImgShowLabel->setPixmap(pic);
-    NewImgWindows->setMaximumSize(NewImgWindows->ImgShowLabel->maximumSize());
-    NewImgWindows->show();
-}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->scrollAreaWidgetContents->setContentsMargins(0,0,0,0);
+    qDebug()<<"ui->scrollAreaWidgetContents->contentsRect()"<<ui->scrollAreaWidgetContents->contentsRect();
+
     this->setWindowTitle("ImageV");
     QPalette palette;
     palette.setColor(QPalette::Window, QColor(255, 255, 255));
-//    ui->ImgWindows->setPalette(palette);
-//    ui->ImgWindows->setAutoFillBackground(true);
 
     ui->pathline->setAcceptDrops(true);
     ImgformatBtnGroup = new QButtonGroup(this);
@@ -49,8 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ImgformatBtnGroup->addButton(ui->YV24Button,YV24);
     ImgformatBtnGroup->addButton(ui->JPGButton,JPG);
     ui->NV12Button->setChecked(true);
+
+
     InstanceofImgCvt = new ImageFormatConvert();
-    QGraphicsScene *scene = new QGraphicsScene;
     QRegularExpression regExp("[0-9]+$");
     QValidator *validator = new QRegularExpressionValidator(regExp, this );
 
@@ -62,6 +56,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ImgW->setText("0");
     ui->ImgStride->setText("0");
 
+
+    //瀑布流的使用
+//    ui->ImgShowWin->setFixedColCount(3);
+    ui->ImgShowWin->resizeWidgetsToEqualWidth();
+
     connect(ui->ImgW,&QLineEdit::textChanged,[=]()
     {
        QString ImgWidth = ui->ImgW->text();
@@ -70,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->pathbutton,&QPushButton::clicked,[=](){
 
-        paths = QFileDialog::getOpenFileNames(this,"打开文件","C:\\Users");
+        paths = QFileDialog::getOpenFileNames(this,"打开文件","C:\\Users\\Public\\Pictures");
         QString path;
         for(int i=0;i<paths.size();i++)
         {
@@ -120,18 +119,11 @@ MainWindow::MainWindow(QWidget *parent) :
             InstanceofImgCvt->ImgH = ui->ImgH->text().toInt();
             InstanceofImgCvt->ImgStride = ui->ImgStride->text().toInt();
 
-            if(InstanceofImgCvt->ImgW==0||InstanceofImgCvt->ImgH==0||InstanceofImgCvt->ImgStride==0)
-                QMessageBox::critical(this, tr("Waring"),  tr("Please Check Image Size!"), QMessageBox::Discard,  QMessageBox::Discard);
-            else
-            {
+//            if(InstanceofImgCvt->ImgW==0||InstanceofImgCvt->ImgH==0||InstanceofImgCvt->ImgStride==0)
+//                QMessageBox::critical(this, tr("Waring"),  tr("Please Check Image Size!"), QMessageBox::Discard,  QMessageBox::Discard);
+//            else
+//            {
                 cv::Mat(InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,CV_8UC3).copyTo(InstanceofImgCvt->jpgImg);
-                int ratio = ui->ImgList->size().width()/3;
-                qDebug()<<"ratio is "<<ratio;
-                ui->ImgList->setViewMode(QListWidget::IconMode);
-                ui->ImgList->setSpacing(10);
-                ui->ImgList->setResizeMode(QListView::Adjust);
-                ui->ImgList->setMovement(QListView::Free);
-                ui->ImgList->setIconSize(QSize(ratio*1.5, ratio*1.5));
 
                 for(int i=0;i<paths.size();i++)
                 {
@@ -160,19 +152,21 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                                   InstanceofImgCvt->jpgImg.rows,
                                                                                   InstanceofImgCvt->jpgImg.cols * 3, QImage::Format_RGB888);
 
-                    QIcon icon;
-                    QListWidgetItem *imageItem = new QListWidgetItem;
-                    imageItem->setWhatsThis( QString::number(i));
-                    icon.addPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage));
-                    imageItem->setIcon(icon);
-                    ui->ImgList->addItem(imageItem);
-                    qDebug()<<"What is this "<<imageItem->whatsThis();
 
+                    ClickAbleQLabel *img = new ClickAbleQLabel(this->ui->ImgShowWin->widget());
+                    img->setPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage).scaledToWidth(121,Qt::SmoothTransformation));
+                    img->adjustSize();
+                    ui->ImgShowWin->addWidget(img);
+                    img->setWhatsThis(paths[i]);
+                    img->show();
+                    connect(img,SIGNAL(doubleClickQlabel()),
+                                       img,SLOT(newImgShowWin()));
                 }
-            }
+       //     }
+            ui->ImgShowWin->adjustWidgetsPos();
         });
     });
-    connect(ui->ImgList,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(OnListWidgetDoubleClicked(QListWidgetItem*)));
+//
 }
 
 

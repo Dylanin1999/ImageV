@@ -15,7 +15,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -26,6 +25,7 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "waterfallscrollarea.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -40,7 +40,8 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QPushButton *pathbutton;
     QHBoxLayout *horizontalLayout_2;
-    QListWidget *ImgList;
+    WaterfallScrollArea *ImgShowWin;
+    QWidget *scrollAreaWidgetContents;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout_2;
     QGridLayout *gridLayout_2;
@@ -112,10 +113,21 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        ImgList = new QListWidget(centralWidget);
-        ImgList->setObjectName("ImgList");
+        ImgShowWin = new WaterfallScrollArea(centralWidget);
+        ImgShowWin->setObjectName("ImgShowWin");
+        ImgShowWin->setMinimumSize(QSize(400, 500));
+        ImgShowWin->setContextMenuPolicy(Qt::ActionsContextMenu);
+        ImgShowWin->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        ImgShowWin->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        ImgShowWin->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        ImgShowWin->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 452, 521));
+        scrollAreaWidgetContents->setContextMenuPolicy(Qt::ActionsContextMenu);
+        ImgShowWin->setWidget(scrollAreaWidgetContents);
 
-        horizontalLayout_2->addWidget(ImgList);
+        horizontalLayout_2->addWidget(ImgShowWin);
 
         horizontalSpacer = new QSpacerItem(2, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -230,7 +242,7 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
-        horizontalLayout_2->setStretch(0, 4);
+        horizontalLayout_2->setStretch(0, 6);
         horizontalLayout_2->setStretch(2, 1);
 
         verticalLayout_3->addLayout(horizontalLayout_2);

@@ -29,17 +29,25 @@ LIBS += D:\Software\opencv-4.6.0\opencv46Mscv\build\lib\libopencv_*.dll.a \
 CONFIG += c++11
 
 SOURCES += \
-    imgshowwidget.cpp \
+    QCustomWidget.cpp \
+    clickableqlabel.cpp \
         main.cpp \
         mainwindow.cpp \
     namechange.cpp \
-    imageformatconvert.cpp
+    imageformatconvert.cpp \
+    smoothlistwidget.cpp \
+    waterfallscrollarea.cpp \
+    zoomqgraphicsview.cpp
 
 HEADERS += \
-    imgshowwidget.h \
+    QCustomWidget.h \
+    clickableqlabel.h \
         mainwindow.h \
     namechange.h \
-    imageformatconvert.h
+    imageformatconvert.h \
+    smoothscrollbean.h \
+    waterfallscrollarea.h \
+    zoomqgraphicsview.h
 
 FORMS += \
         mainwindow.ui

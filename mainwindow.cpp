@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ImgformatBtnGroup->addButton(ui->I444Button,I444);
     ImgformatBtnGroup->addButton(ui->YV24Button,YV24);
     ImgformatBtnGroup->addButton(ui->JPGButton,JPG);
+    ImgformatBtnGroup->addButton(ui->RAWButton,RAW);
     ui->NV12Button->setChecked(true);
 
 
@@ -50,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->ImgH->setValidator(validator);
     ui->ImgW->setValidator(validator);
-    QStringList fileTypeList = {"nv12","nv21","i444","yv24","jpg"};
+    QStringList fileTypeList = {"nv12","nv21","i444","yv24","jpg","png","raw"};
 
     ui->ImgH->setText("0");
     ui->ImgW->setText("0");
@@ -70,7 +71,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pathbutton,&QPushButton::clicked,[=](){
 
         paths = QFileDialog::getOpenFileNames(this,"打开文件","C:\\Users\\Public\\Pictures");
+        if(paths.size()<=0)
+            return ;
         QString path;
+
         for(int i=0;i<paths.size();i++)
         {
             path+=paths[i]+";";
@@ -95,11 +99,11 @@ MainWindow::MainWindow(QWidget *parent) :
             case(3):
                 ui->YV24Button->setChecked(true);
                 break;
-            case(4):
-                ui->JPGButton->setChecked(true);
-                break;
+            case(6):
+                ui->RAWButton->setChecked(true);
+            break;
             default:
-                ui->NV12Button->setChecked(true);
+                ui->JPGButton->setChecked(true);
             break;
         }
 
@@ -119,10 +123,13 @@ MainWindow::MainWindow(QWidget *parent) :
             InstanceofImgCvt->ImgH = ui->ImgH->text().toInt();
             InstanceofImgCvt->ImgStride = ui->ImgStride->text().toInt();
 
-//            if(InstanceofImgCvt->ImgW==0||InstanceofImgCvt->ImgH==0||InstanceofImgCvt->ImgStride==0)
-//                QMessageBox::critical(this, tr("Waring"),  tr("Please Check Image Size!"), QMessageBox::Discard,  QMessageBox::Discard);
-//            else
-//            {
+            if(paths.size()<=0)
+                return 0;
+
+            if(InstanceofImgCvt->ImgW==0||InstanceofImgCvt->ImgH==0||InstanceofImgCvt->ImgStride==0)
+                QMessageBox::critical(this, tr("Waring"),  tr("Please Check Image Size!"), QMessageBox::Discard,  QMessageBox::Discard);
+            else
+            {
                 cv::Mat(InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,CV_8UC3).copyTo(InstanceofImgCvt->jpgImg);
 
                 for(int i=0;i<paths.size();i++)
@@ -144,6 +151,8 @@ MainWindow::MainWindow(QWidget *parent) :
                         break;
                         case JPG:
                         InstanceofImgCvt->JpgToJpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
+                        case RAW:
+                        InstanceofImgCvt->RawTojpg(path,InstanceofImgCvt->ImgH,InstanceofImgCvt->ImgW,InstanceofImgCvt->ImgStride);
                         break;
                     }
                     if(ImgformatBtnGroup->checkedId()!=JPG)
@@ -152,17 +161,19 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                                   InstanceofImgCvt->jpgImg.rows,
                                                                                   InstanceofImgCvt->jpgImg.cols * 3, QImage::Format_RGB888);
 
-
                     ClickAbleQLabel *img = new ClickAbleQLabel(this->ui->ImgShowWin->widget());
-                    img->setPixmap(QPixmap::fromImage(InstanceofImgCvt->myQImage).scaledToWidth(121,Qt::SmoothTransformation));
+                    this->imgVec.push_back(img);
+                    img->noScalePic = QPixmap::fromImage(InstanceofImgCvt->myQImage);
+                    img->setPixmap(img->noScalePic.scaledToWidth(121,Qt::SmoothTransformation));
+                    img->picName = QString::fromStdString(path);
                     img->adjustSize();
                     ui->ImgShowWin->addWidget(img);
-                    img->setWhatsThis(paths[i]);
+
                     img->show();
                     connect(img,SIGNAL(doubleClickQlabel()),
                                        img,SLOT(newImgShowWin()));
                 }
-       //     }
+            }
             ui->ImgShowWin->adjustWidgetsPos();
         });
     });
@@ -173,6 +184,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    for(int i=0;i<this->imgVec.size();i++)
+        delete this->imgVec[i];
     delete InstanceofImgCvt;
     delete scene;
     delete ui;

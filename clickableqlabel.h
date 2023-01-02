@@ -12,6 +12,10 @@ public:
 
     void mouseDoubleClickEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+
+    QPixmap noScalePic;
+    QString picName;
+
 signals:
     void doubleClickQlabel();
 

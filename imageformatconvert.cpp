@@ -37,30 +37,24 @@ void ImageFormatConvert::NV12ToJpg(std::string path, int Height, int Width, int 
     for (int i = 0; i < yHeight; i++) {
         for (int j = 0;j<Width;j++) {
             Y = int(yuvbuff[j + i * Stride]);
-          // std::cout << "Y index: " << j + i * Stride << "Y value: "<< int(yuvbuff[j + i * Stride]) << std::endl;
-           //std::cout << "U index: " << yHeight * Stride + (j / 2) * 2 + i / 2 * Stride << "U value: " << int(yuvbuff[yHeight * Stride + (j / 2) * 2 + i / 2 * Stride])<<std::endl;
 
-           U = int(yuvbuff[yHeight * Stride + (j / 2) * 2 + i / 2 * Stride - 1]);
-           V = int(yuvbuff[yHeight * Stride + (j / 2) * 2 + i / 2 * Stride]);
+            U = int(yuvbuff[yHeight * Stride + (j / 2) * 2 + i / 2 * Stride - 1]);
+            V = int(yuvbuff[yHeight * Stride + (j / 2) * 2 + i / 2 * Stride]);
 
+            int R = Y + 1.4075 * (V - 128);
+            int G = Y - 0.3455 * (U -128) - 0.7169 * (V -128);
+            int B = Y + 1.779 * (U - 128);
 
-           /*int R = Y + ((360 * (V - 128)) >> 8);
-           int G = Y - (((88 * (U - 128) + 184 * (V - 128))) >> 8);
-           int B = Y + ((455 * (U - 128)) >> 8);*/
-
-
-           int R = Y + 1.4075 * (V - 128);
-           int G = Y - 0.3455 * (U -128) - 0.7169 * (V -128);
-           int B = Y + 1.779 * (U - 128);
-
-           R = (R < 0) ? 0 : ((R > 255) ? 255 : R);
-           G = (G < 0) ? 0 : ((G > 255) ? 255 : G);
-           B = (B < 0) ? 0 : ((B > 255) ? 255 : B);
-           jpgImg.at<cv::Vec3b>(i, j)[0] = char(B);
-           jpgImg.at<cv::Vec3b>(i, j)[1] = char(G);
-           jpgImg.at<cv::Vec3b>(i, j)[2] = char(R);
+            R = (R < 0) ? 0 : ((R > 255) ? 255 : R);
+            G = (G < 0) ? 0 : ((G > 255) ? 255 : G);
+            B = (B < 0) ? 0 : ((B > 255) ? 255 : B);
+            jpgImg.at<cv::Vec3b>(i, j)[0] = char(B);
+            jpgImg.at<cv::Vec3b>(i, j)[1] = char(G);
+            jpgImg.at<cv::Vec3b>(i, j)[2] = char(R);
         }
     }
+
+//    cv::imwrite(filename,jpgImg);
 }
 
 void ImageFormatConvert::NV21ToJpg(std::string path, int Height, int Width, int Stride)
@@ -71,7 +65,7 @@ void ImageFormatConvert::NV21ToJpg(std::string path, int Height, int Width, int 
     int cols = Width;
     unsigned char* yuvbuff = new unsigned char[int(1.5 * rows * cols)];
     memset(yuvbuff,0,int(1.5 * rows * cols));
-    fread(yuvbuff,sizeof (unsigned char),int(1.5 * rows * cols),fp);
+    fread(yuvbuff, sizeof(unsigned char), int(1.5 * rows * cols), fp);
 //    R= Y + ((360 * (V - 128))>>8) ;
 //    G= Y - (( ( 88 * (U - 128)  + 184 * (V - 128)) )>>8) ;
 //    B= Y +((455 * (U - 128))>>8) ;
@@ -80,6 +74,8 @@ void ImageFormatConvert::NV21ToJpg(std::string path, int Height, int Width, int 
     fseek(fp,0,SEEK_END);
     file_size=ftell(fp);
     qDebug()<<"file_size: "<<file_size;
+
+    qDebug()<<"yuvbuff lens: "<<int(1.5 * rows * cols);
 
     Height = file_size/Stride;
     qDebug()<<"Height: "<<Height;
@@ -121,6 +117,8 @@ void ImageFormatConvert::NV21ToJpg(std::string path, int Height, int Width, int 
            jpgImg.at<cv::Vec3b>(i, j)[2] = char(R);
         }
     }
+
+//    cv::imwrite(filename,jpgImg);
 }
 
 
@@ -312,7 +310,11 @@ void ImageFormatConvert::JpgToJpg(std::string path, int Height, int Width, int S
      myQImage.load(Qpath);
 }
 
-
+void ImageFormatConvert::RawTojpg(std::string path,int Height,int Width,int Stride)
+{
+    Demosaicing(path, jpgImg, Height, Width, 1, 1);
+    cv::imwrite("C:/Users/dylan/Pictures/raw.jpg",jpgImg);
+}
 
 ImageFormatConvert::ImageFormatConvert()
 {

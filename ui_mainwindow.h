@@ -52,6 +52,7 @@ public:
     QRadioButton *I444Button;
     QRadioButton *YV24Button;
     QRadioButton *JPGButton;
+    QRadioButton *RAWButton;
     QGridLayout *gridLayout;
     QLabel *ImgS;
     QLineEdit *ImgStride;
@@ -172,6 +173,11 @@ public:
 
         verticalLayout->addWidget(JPGButton);
 
+        RAWButton = new QRadioButton(centralWidget);
+        RAWButton->setObjectName("RAWButton");
+
+        verticalLayout->addWidget(RAWButton);
+
 
         gridLayout_2->addLayout(verticalLayout, 0, 0, 2, 1);
 
@@ -282,6 +288,7 @@ public:
         I444Button->setText(QCoreApplication::translate("MainWindow", "I444", nullptr));
         YV24Button->setText(QCoreApplication::translate("MainWindow", "YV24", nullptr));
         JPGButton->setText(QCoreApplication::translate("MainWindow", "JPG", nullptr));
+        RAWButton->setText(QCoreApplication::translate("MainWindow", "RAW", nullptr));
         ImgS->setText(QCoreApplication::translate("MainWindow", "Stride", nullptr));
         ImgWidth->setText(QCoreApplication::translate("MainWindow", "Width", nullptr));
         ImgHeight->setText(QCoreApplication::translate("MainWindow", "Height", nullptr));

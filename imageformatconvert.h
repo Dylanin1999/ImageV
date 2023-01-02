@@ -8,6 +8,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QImage>
+#include "Demosaicing.h"
 
 typedef enum ImageTypeEn
 {
@@ -15,7 +16,8 @@ typedef enum ImageTypeEn
     NV21,
     I444,
     YV24,
-    JPG
+    JPG,
+    RAW
 }ImageType_E;
 
 
@@ -35,6 +37,7 @@ public:
     void I420ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
     void YV12ToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
     void JpgToJpg(std::string path,int Height=0,int Width=0,int Stride=0);
+    void RawTojpg(std::string path,int Height=0,int Width=0,int Stride=0);
 
     void YUVToRGB(int Y,int U,int V);
 };
